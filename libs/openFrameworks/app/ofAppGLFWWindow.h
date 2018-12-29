@@ -206,6 +206,7 @@ private:
 	int				currentW, currentH;		/// Extents of the window client area, which may be scaled by pixelsScreenCoordScale to map to physical framebuffer pixels.
 	float           pixelScreenCoordScale;  /// Scale factor from virtual operating-system defined client area extents (as seen in currentW, currentH) to physical framebuffer pixel coordinates (as seen in windowW, windowH).
 
+
 	ofRectangle windowRect;
 
 	int				buttonInUse;
@@ -227,6 +228,7 @@ private:
 
     #ifdef TARGET_WIN32
     LONG lExStyle, lStyle;
+	float           winPixelScreenCoordScale;  /// Scale factor for windows systems.
     #endif // TARGET_WIN32
 };
 

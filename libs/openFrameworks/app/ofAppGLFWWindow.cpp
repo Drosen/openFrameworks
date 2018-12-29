@@ -333,6 +333,18 @@ void ofAppGLFWWindow::setup(const ofGLFWWindowSettings & _settings){
 		}
 	}
 
+
+#ifdef TARGET_WIN32	//this lets us detect if the window is running in a HiDPI mode on windows:
+	float xScale = 1.0;
+	float yScale = 1.0;
+	glfwGetWindowContentScale(windowP, &xScale, &yScale);
+	ofLogWarning() << "WINDOWS HDPI SCALING: " << xScale << ", " << yScale << endl;
+	ofLogWarning() << "Width and Height: " << windowW << ", " << windowH << endl;
+	ofLogWarning() << "framebufferW: " << framebufferW << ", " << framebufferH << endl;
+	winPixelScreenCoordScale = xScale;
+#endif
+
+
 #ifndef TARGET_OPENGLES
 	static bool inited = false;
 	if(!inited){
@@ -528,7 +540,14 @@ void ofAppGLFWWindow::setWindowTitle(string title){
 
 //------------------------------------------------------------
 int ofAppGLFWWindow::getPixelScreenCoordScale(){
-    return pixelScreenCoordScale;
+    
+	float scalingFactor = pixelScreenCoordScale;
+#ifdef TARGET_WIN32
+	//on windows machines, use the windows specific scaling factor:
+	scalingFactor = winPixelScreenCoordScale;
+#endif
+
+    return scalingFactor;
 }
 
 //------------------------------------------------------------
